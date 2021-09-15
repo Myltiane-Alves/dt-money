@@ -1,8 +1,35 @@
+import { useState } from 'react';
+import Modal from 'react-modal';
+import { Header } from './components/Header';
+import { DashBoard } from './components/DashBoard';
+import { NewTransactionModal } from './components/NewTransactionModal';
+import { TransactionsProvider } from './hooks/useTransactions';
+
+import { GlobalStyle } from './styles/global';
+
+Modal.setAppElement("#root");
+
 export function App() {
+    const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] = useState(false);
+    
+    function handleOpenNewTransactionModal() {
+        setIsNewTransactionModalOpen(true);
+    }
+
+    function handleCloseNewTransactionModal() {
+        setIsNewTransactionModalOpen(false);
+    }
+
     return (
-        <div className="App">
-            <h1>Myltiane aqui</h1>
-        </div>
-    )
+        <TransactionsProvider >
+            <Header onOpenNewTransactionModal={handleOpenNewTransactionModal} />
+            <DashBoard />
+            <NewTransactionModal 
+                isOpen={isNewTransactionModalOpen}
+                onRequestClose={handleCloseNewTransactionModal}
+            />
+            <GlobalStyle />
+        </TransactionsProvider>
+    );
 }
 
